@@ -6,12 +6,15 @@ let res = document.getElementById("res")
 btn.addEventListener("click", () => {
 
     //SOl 1 for indicizzato tradizionale
-    let sum = 0
+/*     let sum = 0
     for (let i = 0; i < nums.length; i++) {
         sum += nums[i]
-    }
+    } */
 
-    
+    //Sol 2 - foreach
+    for (let elem of nums) {
+        sum += elem;
+    }
 
     res.textContent = sum
 
