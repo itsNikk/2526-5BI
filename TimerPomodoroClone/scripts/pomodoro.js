@@ -3,7 +3,6 @@ let pauseBtn = document.getElementById("pauseBtn")
 let resetBtn = document.getElementById("resetBtn")
 let timerElem = document.getElementById("timer")
 
-
 let tomato = {
     //25 min * 60 = 1500 secondi
     seconds: 1500,
@@ -35,10 +34,18 @@ function tick() {
 
 function start() {
     if (!tomato.running) {
-        // setInterval => esegui parametro 1 ogni poaramtro 2 ms
+        //setTimeout(p1,p2) => esegue p1 tra p2 ONESHOT
+        //setInterval => esegui parametro 1 ogni poaramtro 2 ms
         tomato.timer = setInterval(tick, 1000);
         tomato.running = true;
     }
+}
+
+function pause() {
+    //fa partire un timer di 5 muinuti
+    tomato.seconds = 5 * 60
+    clearInterval(tomato.timer)
+    showTimer()
 }
 
 function reset() {
@@ -48,5 +55,6 @@ function reset() {
     showTimer();
 }
 
+pauseBtn.addEventListener("click", pause)
 resetBtn.addEventListener("click", reset)
 startBtn.addEventListener("click", start)
