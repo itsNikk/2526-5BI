@@ -7,6 +7,7 @@ let scuseFiltrateElem = document.getElementById("scuseFiltrate")
 let filtroElem = document.getElementById("filtro")
 let filtroNumElem = document.getElementById("filtroNum")
 let rndExcuseBtn = document.getElementById("rndExcuseBtn")
+let excuseAvgElem = document.getElementById("excuseAvg")
 
 let excusesList = []
 
@@ -16,10 +17,24 @@ let excusesList = []
 }*/
 
 
+function computeAvarageCreativity() {
+    let sum = 0
+    for (excuse of excusesList) {
+        //cast a Number FONDAMENTALE, perchè?
+        sum += Number(excuse.creativita)
+    }
+
+    return sum / excusesList.length
+}
+
+
+//Scusa random
 rndExcuseBtn.addEventListener("click", () => {
+    if (excusesList.length === 0) return
     const rndIndex = Math.floor(Math.random() * excusesList.length)
     alert(excusesList[rndIndex].testo + ":" + excusesList[rndIndex].creativita)
 })
+
 //Punto 3
 creativitaElem.addEventListener("input", () => {
     scuseFiltrateElem.innerHTML = "";
@@ -49,6 +64,8 @@ form.addEventListener("submit", (e) => {
     excusesList.push(
         { testo: testoElem.value, creativita: creativitaElem.value }
     );
+
+    excuseAvgElem.textContent = "Creatività media: " + computeAvarageCreativity()
 
     form.reset()
 
