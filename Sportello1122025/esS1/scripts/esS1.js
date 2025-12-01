@@ -6,6 +6,7 @@ let scuseFiltrateElem = document.getElementById("scuseFiltrate")
 
 let filtroElem = document.getElementById("filtro")
 let filtroNumElem = document.getElementById("filtroNum")
+let rndExcuseBtn = document.getElementById("rndExcuseBtn")
 
 let excusesList = []
 
@@ -14,6 +15,11 @@ let excusesList = []
     creatività:5
 }*/
 
+
+rndExcuseBtn.addEventListener("click", () => {
+    const rndIndex = Math.floor(Math.random() * excusesList.length)
+    alert(excusesList[rndIndex].testo + ":" + excusesList[rndIndex].creativita)
+})
 //Punto 3
 creativitaElem.addEventListener("input", () => {
     scuseFiltrateElem.innerHTML = "";
@@ -43,9 +49,9 @@ form.addEventListener("submit", (e) => {
     excusesList.push(
         { testo: testoElem.value, creativita: creativitaElem.value }
     );
-    
+
     form.reset()
-    
+
     //fai vedere tutte le scuse
     // textContent e innerHTML = 1) inserisce tseto puro (non interpreta HTML)
     // 2) InnerHTML inserisce testo ma interpreta anche i tag HTML
