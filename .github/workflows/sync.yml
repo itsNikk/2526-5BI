@@ -37,7 +37,7 @@ jobs:
             --exclude='.env' \
             --exclude='.env.local' \
             --exclude='.DS_Store' \
-            ./ destination/TPSI/5AI/
+            ./ destination/TPSI/5BI/
 
       - name: Commit and push
         run: |
@@ -46,7 +46,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           if ! git diff --quiet || ! git diff --staged --quiet; then
-            git commit -m "Sync 5AI: ${{ github.event.head_commit.message }}" \
+            git commit -m "Sync 5BI: ${{ github.event.head_commit.message }}" \
                        -m "From: ${{ github.repository }}@${{ github.sha }}"
             git push
           fi
