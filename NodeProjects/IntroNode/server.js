@@ -1,6 +1,9 @@
 const http = require("http")
 
-const PORT = 1025;
+//80 = HTTP (wellknown) - 8080 HTTP per sviluppo
+//Spesso i servizi node si lanciano sulla porta 3000 ma son convenzioni
+//I veri problemi nascono in fase di deploy, non (solitamente) in sviluppo locale
+const PORT = 8080;
 const HOSTNAME = "localhost";
 
 let users = [
@@ -42,7 +45,15 @@ const server = http.createServer((req, res) => {
 
 })
 
-//EADDRRINUSE
+//Errore EADDRRINUSE se si tenta di aprire un servizio su una porta già utilizzata
+/**
+ * PORT RANGES: [0, 65535]
+ * Tre categorie:
+ * Well known ports: da 0 a 1023 --> per servizi standard come HTTP(80) o FTP(21)
+ * Porte registrate: da 1024 a 49151 --> Per applicazioni specifiche ma non a livello SO es. mySQL 3306
+ * Porte dinamiche/effimere: da 49152 a 65535 --> usate temporaneamente dalla applicazioni per connessioni e gestite dinamicamente dai SO.
+ *                                                Intervallo non riservato, utilizzato dai client e identificare la sorgente della comunicazione
+ */
 server.listen(PORT, HOSTNAME, () => {
     console.log("servizio ONLINE " + HOSTNAME + ":" + PORT);
 })
