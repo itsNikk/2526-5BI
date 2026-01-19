@@ -1,0 +1,53 @@
+name: Sync to ANNO-DI-QUINTA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout destination repo
+        uses: actions/checkout@v4
+        with:
+          repository: Dipartimento-Informatica-OSDB/ANNO-DI-QUINTA
+          token: ${{ secrets.SYNC_PAT }}
+          path: destination
+
+      - name: Sync source files
+        run: |
+          mkdir -p destination/TPSI/5BI
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='destination' \
+            --exclude='node_modules' \
+            --exclude='dist' \
+            --exclude='build' \
+            --exclude='.next' \
+            --exclude='.cache' \
+            --exclude='coverage' \
+            --exclude='*.log' \
+            --exclude='.env' \
+            --exclude='.env.local' \
+            --exclude='.DS_Store' \
+            ./ destination/TPSI/5BI/
+
+      - name: Commit and push
+        run: |
+          cd destination
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git commit -m "Sync 5BI: ${{ github.event.head_commit.message }}" \
+                       -m "From: ${{ github.repository }}@${{ github.sha }}"
+            git push
+          fi
