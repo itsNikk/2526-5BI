@@ -31,9 +31,9 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
-    //setuppare l'endpoint POST numbers che aggiunge un numero all'array
-    //setuppare l'endpoint GET numbers che restituisce tutti i numeri
-    //setuppare l'endpoint GET numbers/n che rstituisce l'ennesimo numero
+    //Implementare l'endpoint POST numbers che aggiunge un numero all'array
+    //Implementare l'endpoint GET numbers che restituisce tutti i numeri
+    //Implementare l'endpoint GET numbers/n che rstituisce l'ennesimo numero
 
 
     res.statusCode = 404;
@@ -46,3 +46,7 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, HOSTNAME, () => {
     console.log("servizio ONLINE " + HOSTNAME + ":" + PORT);
 })
+
+/*Considerazione DRY: Cos'è estremamaente ripetitivo in questo codice?
+* Come possiamo migliorare?
+*/
