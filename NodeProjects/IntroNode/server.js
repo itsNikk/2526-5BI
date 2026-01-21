@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
 
     //Implementare l'endpoint POST numbers che aggiunge un numero all'array
     //Implementare l'endpoint GET numbers che restituisce tutti i numeri
-    //Implementare l'endpoint GET numbers/n che rstituisce l'ennesimo numero
+    //Implementare l'endpoint GET numbers/n che restituisce l'ennesimo numero
 
 
     res.statusCode = 404;
