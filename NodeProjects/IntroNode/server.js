@@ -1,4 +1,5 @@
-const http = require("http")
+const http = require("http");
+const { type } = require("os");
 
 //80 = HTTP (wellknown) - 8080 HTTP per sviluppo
 //Spesso i servizi node si lanciano sulla porta 3000 ma son convenzioni
@@ -16,10 +17,17 @@ let numbers = []
 
 const server = http.createServer((req, res) => {
 
+    console.log(req.url);
+    let urlParts = []
+    for (let part of req.url.split("/")) {
+        if (part !== "") urlParts.push(part);
+    }
+    console.log(urlParts);
+
     if (req.url === "/") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "text/plain");
-        return res.end("Ciao, benvenuto");
+        return res.end("Ciao, benvenuto\n");
     }
 
     if (req.url === "/users" && req.method === "GET") {
@@ -34,9 +42,49 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
-    //Implementare l'endpoint POST numbers che aggiunge un numero all'array
-    //Implementare l'endpoint GET numbers che restituisce tutti i numeri
-    //Implementare l'endpoint GET numbers/n che restituisce l'ennesimo numero
+    //1) Implementare l'endpoint POST numbers che aggiunge un numero all'array
+    if (req.url === "/numbers" && req.method === "POST") {
+        let body = '';
+        //Fintanto che stanno arrivando dati dal client...  
+        req.on("data", (chunk) => {
+            body += chunk
+        });
+
+        //Quando finisce l'invio
+        req.on("end", () => {
+
+            if (typeof body !== "number") {
+                res.statusCode = 400;
+                res.setHeader("Content-Type", "application/json")
+                return res.end(JSON.stringify({ error: " number must be a number" }))
+            }
+
+            numbers.push(body);
+
+            res.statusCode = 201;
+            res.setHeader("Content-Type", "application/json");
+            return res.end(JSON.stringify({ numbers }))
+        })
+
+        return;
+    }
+    //2) Implementare l'endpoint GET numbers che restituisce tutti i numeri
+    if (req.url === "/numbers" && req.method === "GET") {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        //TUTTO quello che passo a end() DEVE essere stringa.
+        return res.end(JSON.stringify({ numbers: numbers }));
+    }
+    //3) Implementare l'endpoint GET numbers/n che restituisce l'ennesimo numero
+    if (urlParts[0] === "/number" && req.method === "GET" && urlParts.length === 2) {
+        let n = urlParts[1];
+
+        //COntrollare se n è davvero un numero e se è all'interno dell'array...
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ index: n, value: numbers[n] }))
+    }
 
 
     res.statusCode = 404;
