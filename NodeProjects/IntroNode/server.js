@@ -80,7 +80,7 @@ const server = http.createServer((req, res) => {
     if (urlParts[0] === "numbers" && req.method === "GET" && urlParts.length === 2) {
         let n = urlParts[1];
 
-        //COntrollare se n è davvero un numero e se è all'interno dell'array...
+        //Controllare se n è davvero un numero, se è positivo ed intero e se è all'interno dell'array...
 
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
