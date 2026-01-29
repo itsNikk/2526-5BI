@@ -43,7 +43,7 @@ const server = http.createServer((req, res) => {
     }
 
     //1) Implementare l'endpoint POST numbers che aggiunge un numero all'array
-    if (req.url === "/numbers" && req.method === "POST") {
+    if (urlParts[0] === "numbers" && req.method === "POST") {
         let body = '';
         //Fintanto che stanno arrivando dati dal client...  
         req.on("data", (chunk) => {
@@ -69,14 +69,14 @@ const server = http.createServer((req, res) => {
         return;
     }
     //2) Implementare l'endpoint GET numbers che restituisce tutti i numeri
-    if (req.url === "/numbers" && req.method === "GET") {
+    if (urlParts[0] === "numbers" && req.method === "GET") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         //TUTTO quello che passo a end() DEVE essere stringa.
         return res.end(JSON.stringify({ numbers: numbers }));
     }
     //3) Implementare l'endpoint GET numbers/n che restituisce l'ennesimo numero
-    if (urlParts[0] === "/number" && req.method === "GET" && urlParts.length === 2) {
+    if (urlParts[0] === "number" && req.method === "GET" && urlParts.length === 2) {
         let n = urlParts[1];
 
         //COntrollare se n è davvero un numero e se è all'interno dell'array...
