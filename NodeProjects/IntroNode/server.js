@@ -24,19 +24,19 @@ const server = http.createServer((req, res) => {
     }
     console.log(urlParts);
 
-    if (req.url === "/") {
+    if (urlParts[0] === "/") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "text/plain");
         return res.end("Ciao, benvenuto\n");
     }
 
-    if (req.url === "/users" && req.method === "GET") {
+    if (urlParts[0] === "/users" && req.method === "GET") {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json")
         return res.end(JSON.stringify(users));
     }
 
-    if (req.url === "/users" && req.method === "POST") {
+    if (urlParts[0] === "/users" && req.method === "POST") {
         res.statusCode = 405; //method not allowed
         res.setHeader("Allow", "GET");
         return res.end();
@@ -52,8 +52,8 @@ const server = http.createServer((req, res) => {
 
         //Quando finisce l'invio
         req.on("end", () => {
-            
-            //Questo è giusto ma perchè
+
+            //Questo è giusto, ma anche typeof body === 'number' lo era ma non del tutto... perchè?
             if (Number.isNaN(body)) {
                 res.statusCode = 400;
                 res.setHeader("Content-Type", "application/json")
