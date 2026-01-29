@@ -1,5 +1,4 @@
 const http = require("http");
-const { type } = require("os");
 
 //80 = HTTP (wellknown) - 8080 HTTP per sviluppo
 //Spesso i servizi node si lanciano sulla porta 3000 ma son convenzioni
@@ -86,7 +85,6 @@ const server = http.createServer((req, res) => {
         res.setHeader("Content-Type", "application/json");
         return res.end(JSON.stringify({ index: n, value: numbers[n] }))
     }
-
 
     res.statusCode = 404;
     res.setHeader("Content-Type", "application/json")
