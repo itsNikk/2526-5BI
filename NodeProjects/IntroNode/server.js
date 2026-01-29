@@ -53,13 +53,14 @@ const server = http.createServer((req, res) => {
         req.on("end", () => {
 
             //Questo è giusto, ma anche typeof body === 'number' lo era ma non del tutto... perchè?
+            //Inoltre, copre tutti i casi? 
             if (Number.isNaN(body)) {
                 res.statusCode = 400;
                 res.setHeader("Content-Type", "application/json")
                 return res.end(JSON.stringify({ error: " number must be a number" }))
             }
 
-            numbers.push(body);
+            numbers.push(Number(body));
 
             res.statusCode = 201;
             res.setHeader("Content-Type", "application/json");
@@ -69,14 +70,14 @@ const server = http.createServer((req, res) => {
         return;
     }
     //2) Implementare l'endpoint GET numbers che restituisce tutti i numeri
-    if (urlParts[0] === "numbers" && req.method === "GET") {
+    if (urlParts[0] === "numbers" && req.method === "GET" && urlParts.length === 1) {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         //TUTTO quello che passo a end() DEVE essere stringa.
         return res.end(JSON.stringify({ numbers: numbers }));
     }
     //3) Implementare l'endpoint GET numbers/n che restituisce l'ennesimo numero
-    if (urlParts[0] === "number" && req.method === "GET" && urlParts.length === 2) {
+    if (urlParts[0] === "numbers" && req.method === "GET" && urlParts.length === 2) {
         let n = urlParts[1];
 
         //COntrollare se n è davvero un numero e se è all'interno dell'array...
