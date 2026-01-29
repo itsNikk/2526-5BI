@@ -52,8 +52,9 @@ const server = http.createServer((req, res) => {
 
         //Quando finisce l'invio
         req.on("end", () => {
-
-            if (typeof body !== "number") {
+            
+            //Questo è giusto ma perchè
+            if (Number.isNaN(body)) {
                 res.statusCode = 400;
                 res.setHeader("Content-Type", "application/json")
                 return res.end(JSON.stringify({ error: " number must be a number" }))
