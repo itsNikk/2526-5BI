@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "id_arena": 1,
+    "id_giocatore": 1,
+    "data_inizio": "2026-02-05T14:30:00Z",
+    "data_fine": null
+  },
+  {
+    "id": 2,
+    "id_arena": 1,
+    "id_giocatore": 2,
+    "data_inizio": "2026-02-05T14:35:00Z",
+    "data_fine": null
+  },
+  {
+    "id": 3,
+    "id_arena": 2,
+    "id_giocatore": 3,
+    "data_inizio": "2026-02-05T13:00:00Z",
+    "data_fine": "2026-02-05T14:15:00Z"
+  },
+  {
+    "id": 4,
+    "id_arena": 1,
+    "id_giocatore": 3,
+    "data_inizio": "2026-02-05T12:00:00Z",
+    "data_fine": "2026-02-05T13:45:00Z"
+  }
+]

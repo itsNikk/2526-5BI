@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nome": "Arena Nebula",
+    "capienza": 100,
+    "tipo": "battle_royale"
+  },
+  {
+    "id": 2,
+    "nome": "Arena Inferno",
+    "capienza": 50,
+    "tipo": "deathmatch"
+  },
+  {
+    "id": 3,
+    "nome": "Arena Glacier",
+    "capienza": 75,
+    "tipo": "capture_the_flag"
+  }
+]

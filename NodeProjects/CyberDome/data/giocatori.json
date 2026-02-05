@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nome": "Maria Rossi",
+    "nickname": "ShadowQueen",
+    "livello": 47
+  },
+  {
+    "id": 2,
+    "nome": "Luca Bianchi",
+    "nickname": "IronFist",
+    "livello": 32
+  },
+  {
+    "id": 3,
+    "nome": "Sofia Verdi",
+    "nickname": "PhantomBlade",
+    "livello": 58
+  }
+]
