@@ -32,11 +32,13 @@ async function getSolarPanels() {
     }
 }
 
+//Non bellissima ma utile...
+//TODO: potreste metterla in un intervallo, così ogni X secondi fate una richiesta
 async function printResults(){
     let results = await getSolarPanels();
 
     console.log(results);
 }
 
-printResults(9)
+printResults()
 
