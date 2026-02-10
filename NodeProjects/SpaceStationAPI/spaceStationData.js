@@ -5,8 +5,13 @@ async function getSolarPanels() {
 
     if (response.ok) {
         let json = await response.json();
+        let panels = json.power.solar.panels;
         console.log(json);
+        console.log(panels);
     } else {
         console.log("Errore HTTP: " + response.status);
     }
 } 
+
+getSolarPanels()
+
