@@ -165,8 +165,6 @@ async function monitorStation() {
         //Tutte le JS excpetion hanno sempre due campi: name e message
         console.log("ERRORE: ", error.message);
     }
-
-
 }
 
 //Lancio subito un monitoraggio e poi ogni X secondi lo ripropongo...
