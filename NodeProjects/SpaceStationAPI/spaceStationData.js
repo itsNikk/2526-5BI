@@ -1,13 +1,19 @@
 const BASE_URL = "http://localhost:3000"
 
-async function getSolarPanels() {
-    let response = await fetch(BASE_URL + "/station/status");
+/**
+ * 1) chiamare station/status
+ */
+async function getPanels() {
+    const response = await fetch(BASE_URL + "/station/status");
 
     if (response.ok) {
-        let json = await response.json();
-        let panels = json.power.solar.panels;
-        let panelsCount = panels.length
+        const json = await response.json()
+        //        console.log(json);
+        const panels = json.power.solar.panels
+        const totalPanels = panels.length
+        //      console.log(panels);
 
+        //Trova solo quelli operativi
         let activePanels = 0
         for (const panel of panels) {
             if (panel.status === "nominal") {
@@ -15,30 +21,21 @@ async function getSolarPanels() {
             }
         }
 
-        const percentageActive = (activePanels / panelsCount) * 100
+        const percentage = (activePanels / totalPanels) * 100;
 
-        console.log(json);
-        console.log(panels);
-
-        //Creo un OBj JSON e lo restituisco
         return {
-            totalPanels: panelsCount,
+            totalPanels: totalPanels,
             operationalPanels: activePanels,
-            percetage: percentageActive
+            percentage: percentage
         }
 
-    } else {
-        console.log("Errore HTTP: " + response.status);
     }
 }
 
-//Non bellissima ma utile...
-//TODO: potreste metterla in un intervallo, così ogni X secondi fate una richiesta
-async function printResults(){
-    let results = await getSolarPanels();
-
+async function printResults() {
+    const results = await getPanels();
+    console.clear();
     console.log(results);
 }
 
-printResults()
-
+setInterval(printResults, 2000)
