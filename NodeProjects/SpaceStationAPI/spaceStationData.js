@@ -101,7 +101,6 @@ async function calcolaConsumiEsperimenti() {
 
 //TAsk4
 async function gestioneEnergiaCritica() {
-    // Recupera stato energia
     const statusResponse = await fetch(BASE_URL + '/station/status');
     const statusData = await statusResponse.json();
 
