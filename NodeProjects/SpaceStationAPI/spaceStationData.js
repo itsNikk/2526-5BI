@@ -107,7 +107,6 @@ async function gestioneEnergiaCritica() {
 
     const reserves = statusData.power.reserves;
 
-    // Se energia sufficiente, nessuna azione
     if (reserves >= 95) {
         return {
             message: 'Energia sufficiente, nessuna azione necessaria'
