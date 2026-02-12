@@ -66,6 +66,7 @@ async function trovaModuliDegradati() {
     return moduliProblematici;
 }
 
+//Task 3
 async function calcolaConsumiEsperimenti() {
   const response = await fetch(API_BASE + '/station/modules');
   const data = await response.json();
@@ -77,7 +78,7 @@ async function calcolaConsumiEsperimenti() {
   for (let i = 0; i < data.modules.length; i++) {
     const modulo = data.modules[i];
     
-    // Controlla se è un laboratorio
+    // è un esperimento di lab?
     if (modulo.type === 'laboratory' && modulo.experiments) {
       for (let j = 0; j < modulo.experiments.length; j++) {
         const experiment = modulo.experiments[j];
@@ -96,6 +97,48 @@ async function calcolaConsumiEsperimenti() {
     totalCooling: totalCooling,
     activeExperimentsCount: activeExperimentsCount
   };
+}
+
+//TAsk4
+async function gestioneEnergiaCritica() {
+  // Recupera stato energia
+  const statusResponse = await fetch(API_BASE + '/station/status');
+  const statusData = await statusResponse.json();
+  
+  const reserves = statusData.power.reserves;
+  
+  // Se energia sufficiente, nessuna azione
+  if (reserves >= 95) {
+    return {
+      message: 'Energia sufficiente, nessuna azione necessaria'
+    };
+  }
+  
+  // Altrimenti trova esperimenti attivi
+  const modulesResponse = await fetch(API_BASE + '/station/modules');
+  const modulesData = await modulesResponse.json();
+  
+  const esperimentiAttivi = [];
+  
+  for (let i = 0; i < modulesData.modules.length; i++) {
+    const modulo = modulesData.modules[i];
+    
+    if (modulo.type === 'laboratory' && modulo.experiments) {
+      for (let j = 0; j < modulo.experiments.length; j++) {
+        const experiment = modulo.experiments[j];
+        
+        if (experiment.status === 'active') {
+          esperimentiAttivi.push({
+            experimentId: experiment.id,
+            name: experiment.name,
+            powerConsumption: experiment.resourceConsumption.power
+          });
+        }
+      }
+    }
+  }
+  
+  return esperimentiAttivi;
 }
 
 //Creo una funzione che si occupa solo della stampa del separazione delle responsabilitù
