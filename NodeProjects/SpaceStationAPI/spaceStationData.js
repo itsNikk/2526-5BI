@@ -100,7 +100,7 @@ async function calcolaConsumiEsperimenti() {
     };
 }
 
-//TAsk4
+//Task4
 async function gestioneEnergiaCritica() {
     const statusResponse = await fetch(BASE_URL + '/station/status');
     const statusData = await statusResponse.json();
