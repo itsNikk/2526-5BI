@@ -112,7 +112,6 @@ async function gestioneEnergiaCritica() {
         };
     }
 
-    // Altrimenti trova esperimenti attivi
     const modulesResponse = await fetch(BASE_URL + '/station/modules');
     const modulesData = await modulesResponse.json();
 
