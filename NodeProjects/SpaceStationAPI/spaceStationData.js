@@ -66,6 +66,37 @@ async function trovaModuliDegradati() {
     return moduliProblematici;
 }
 
+async function calcolaConsumiEsperimenti() {
+  const response = await fetch(API_BASE + '/station/modules');
+  const data = await response.json();
+  
+  let totalPower = 0;
+  let totalCooling = 0;
+  let activeExperimentsCount = 0;
+  
+  for (let i = 0; i < data.modules.length; i++) {
+    const modulo = data.modules[i];
+    
+    // Controlla se è un laboratorio
+    if (modulo.type === 'laboratory' && modulo.experiments) {
+      for (let j = 0; j < modulo.experiments.length; j++) {
+        const experiment = modulo.experiments[j];
+        
+        if (experiment.status === 'active') {
+          totalPower = totalPower + experiment.resourceConsumption.power;
+          totalCooling = totalCooling + experiment.resourceConsumption.cooling;
+          activeExperimentsCount = activeExperimentsCount + 1;
+        }
+      }
+    }
+  }
+  
+  return {
+    totalPower: totalPower,
+    totalCooling: totalCooling,
+    activeExperimentsCount: activeExperimentsCount
+  };
+}
 
 //Creo una funzione che si occupa solo della stampa del separazione delle responsabilitù
 async function monitorStation() {
