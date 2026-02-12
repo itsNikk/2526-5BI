@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:3000"
+const MONITOR_REFRESH_MS = 5000
 
 /**
  * 1) chiamare station/status
@@ -143,6 +144,7 @@ async function monitorStation() {
     console.clear();
     console.log("---MONITORING STATION---");
 
+    //Perchè questo try catch? che errori intercetta?
     try {
         //Res task1
         const results = await getPanels();
@@ -168,4 +170,4 @@ async function monitorStation() {
 
 //Lancio subito un monitoraggio e poi ogni X secondi lo ripropongo...
 monitorStation()
-setInterval(monitorStation, 2000)
+setInterval(monitorStation, MONITOR_REFRESH_MS)
