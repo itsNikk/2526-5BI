@@ -162,6 +162,7 @@ async function monitorStation() {
         const stationEnergy = await gestioneEnergiaCritica();
         console.log(stationEnergy);
     } catch (error) {
+        //Tutte le JS excpetion hanno sempre due campi: name e message
         console.log("ERRORE: ", error.message);
     }
 
