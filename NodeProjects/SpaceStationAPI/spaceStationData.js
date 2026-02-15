@@ -147,23 +147,27 @@ async function monitorStation() {
     //Perchè questo try catch? che errori intercetta?
     try {
         //Res task1
+        console.log("--- Task 1 results ---");
         const results = await getPanels();
         console.log(results);
 
         //res task2
+        console.log("--- Task 2 results ---");
         const degradedMods = await trovaModuliDegradati()
         console.log(degradedMods);
 
         //res task3
+        console.log("--- Task 3 results ---");
         const expConsumption = await calcolaConsumiEsperimenti()
         console.log(expConsumption);
 
         //res task4
+        console.log("--- Task 4 results ---");
         const stationEnergy = await gestioneEnergiaCritica();
         console.log(stationEnergy);
     } catch (error) {
         //Tutte le JS excpetion hanno sempre due campi: name e message
-        console.log("ERRORE: ", error.message);
+        console.log("ERRORE di rete: ", error.message);
     }
 }
 
