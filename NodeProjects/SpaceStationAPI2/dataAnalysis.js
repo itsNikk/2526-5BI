@@ -1,6 +1,3 @@
-const { escape } = require("querystring")
-
-
 function task1() {
     //TODO
 }
