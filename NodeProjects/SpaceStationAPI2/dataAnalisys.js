@@ -60,17 +60,69 @@ async function shutdownAllLowExpriments() {
     return commandsFromServer
 }
 
+async function executeAllPendingCommands() {
+    const response = await fetch('http://localhost:3000/commands');
+    const data = await response.json();
+
+    let executedCount = 0;
+    let failedCount = 0;
+    const results = [];
+
+    for (const command of data.queue) {
+        if (command.status === "pending") {
+
+            const execResponse = await fetch(
+                "http://localhost:3000/commands/" + command.id + "/execute",
+                { method: 'PUT' }
+            );
+
+            const execData = await execResponse.json();
+
+            if (execData.success) {
+                executedCount++;
+                results.push({
+                    commandId: command.id,
+                    experimentId: command.experimentId,
+                    success: true
+                });
+            } else {
+                failedCount++;
+                results.push({
+                    commandId: command.id,
+                    success: false,
+                    error: execData.error
+                });
+            }
+        }
+    }
+
+    return {
+        executed: executedCount,
+        failed: failedCount,
+        results: results
+    };
+}
+
 async function printResults() {
 
-    console.log("--- TASK 1 ---");
+    try {
+        console.log("--- TASK 1 ---");
 
-    const task1Res = await task1();
-    console.log(task1Res);
+        const task1Res = await task1();
+        console.log(task1Res);
 
 
-    console.log("--- TASK 2 ---");
-    const taskRes = await shutdownAllLowExpriments();
-    console.log(taskRes);
+        console.log("--- TASK 2 ---");
+        const task2Res = await shutdownAllLowExpriments();
+        console.log(task2Res);
+
+        console.log("--- TASK 3 ---");
+        const task3Res = await shutdownAllLowExpriments();
+        console.log(task3Res);
+    } catch (error) {
+        console.log("ERRORE DI RETE: " + error.message);
+    }
+
 }
 
 printResults()
