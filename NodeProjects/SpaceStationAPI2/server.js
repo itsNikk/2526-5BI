@@ -20,9 +20,9 @@ let systemState = {
   experiments: [
     { id: "EXP-771", name: "Protein Crystal Growth", status: randomPick(statuses), priority: randomPick(priorities), power: 4.2 },
     { id: "EXP-803", name: "Zero-G Combustion", status: randomPick(statuses), priority: randomPick(priorities), power: 3.1 },
-    { id: "EXP-904", name: "Plant Growth Study", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(0, 10).toFixed(1) },
-    { id: "EXP-954", name: "Plant vs Zombie Study", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(0, 10).toFixed(1) },
-    { id: "EXP-951", name: "Arm fingers extensions Trial", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(0, 10).toFixed(1) }
+    { id: "EXP-904", name: "Plant Growth Study", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(3, 10).toFixed(1) },
+    { id: "EXP-954", name: "Plant vs Zombie Study", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(3, 10).toFixed(1) },
+    { id: "EXP-951", name: "Arm fingers extensions Trial", status: randomPick(statuses), priority: randomPick(priorities), power: randomInRange(3, 10).toFixed(1) }
   ],
   commandQueue: [],
   lastCommandId: 0,
