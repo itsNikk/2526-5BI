@@ -103,6 +103,59 @@ async function executeAllPendingCommands() {
     };
 }
 
+async function emergencyPowerReduction() {
+    // Step 1: Trova esperimento con consumo maggiore
+    const expResponse = await fetch('http://localhost:3000/experiments');
+    const expData = await expResponse.json();
+
+    let maxPowerExp = null;
+    let maxPower = 0;
+
+    for (const exp of expData.experiments) {
+        if (exp.status === "active" && exp.power > maxPower) {
+            maxPower = exp.power;
+            maxPowerExp = exp;
+        }
+    }
+
+    if (!maxPowerExp) {
+        return {
+            experimentId: null,
+            powerSaved: 0,
+            commandId: null,
+            message: "No active experiments found"
+        };
+    }
+
+    // Step 2: Crea comando emergency_stop
+    const cmdResponse = await fetch('http://localhost:3000/commands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: "emergency_stop",
+            experimentId: maxPowerExp.id,
+            reason: "Emergency power reduction"
+        })
+    });
+
+    const cmdData = await cmdResponse.json();
+    const commandId = cmdData.command.id;
+
+    // Step 3: Esegui immediatamente
+    const execResponse = await fetch(
+        "http://localhost:3000/commands/" + commandId + "/execute",
+        { method: 'PUT' }
+    );
+
+    const execData = await execResponse.json();
+
+    return {
+        experimentId: maxPowerExp.id,
+        powerSaved: maxPower,
+        commandId: commandId
+    };
+}
+
 async function printResults() {
 
     try {
