@@ -180,10 +180,13 @@ async function task5() {
     //Attenzione ai valori del server... c'è una ragione del perchè questa è una buona soluzione
     const powerPercentage = (powerUsed / budget) * 100;
 
+    const THRESHOLD = 80;
+    
     let targetExperiment;
     let action;
 
-    if (powerPercentage > 80) {
+
+    if (powerPercentage > THRESHOLD) {
 
         let minPower = Infinity;
         for (const exp of experiments) {
