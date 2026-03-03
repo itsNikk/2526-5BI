@@ -156,6 +156,34 @@ async function emergencyPowerReduction() {
     };
 }
 
+/*
+GET /experiments e calcola la potenza totale usata
+Se tale valore è maggiore dell 80% del budget
+Trova un esperimento di priorità media attivo con il minor consumo
+chiama POST /commands per shutdown di quel comando
+chiama PUT execute per eseguirlo subito
+altrimenti,
+Trova il primo esperimento standby
+chiama POST per creare comando activate
+chiama PUT execute
+Restituisce {action: shutdown oppure activate, experimentId, newPowerUsed}
+*/
+async function task5() {
+    const response = await fetch("http://localhost:3000/experiments");
+    const allExp = await response.json();
+
+    //Calcolare potenza tot
+    let totPowerUsed = 0;
+    for (const exp of allExp.experiments) {
+        console.log(exp.power)
+        totPowerUsed += Number(exp.power);
+    }
+    //Si, lo so il * ha priorità su / ma mi piace mettere le parentesi ugualmente
+    let budgetThreshold = (Number(allExp.powerStatus.budget) * 80) /100
+    console.log("Total power used: " + totPowerUsed);
+
+}
+
 async function printResults() {
 
     try {
@@ -172,6 +200,10 @@ async function printResults() {
         console.log("--- TASK 3 ---");
         const task3Res = await shutdownAllLowExpriments();
         console.log(task3Res);
+
+        console.log("TASK 5");
+        const task5Res = await task5();
+
     } catch (error) {
         console.log("ERRORE DI RETE: " + error.message);
     }
