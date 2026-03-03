@@ -169,18 +169,75 @@ chiama PUT execute
 Restituisce {action: shutdown oppure activate, experimentId, newPowerUsed}
 */
 async function task5() {
-    const response = await fetch("http://localhost:3000/experiments");
-    const allExp = await response.json();
 
-    //Calcolare potenza tot
-    let totPowerUsed = 0;
-    for (const exp of allExp.experiments) {
-        console.log(exp.power)
-        totPowerUsed += Number(exp.power);
+    const response = await fetch('http://localhost:3000/experiments');
+    const data = await response.json();
+
+    const experiments = data.experiments;
+    const budget = data.powerStatus.budget;
+    const powerUsed = data.powerStatus.used;
+
+    //Attenzione ai valori del server... c'è una ragione del perchè questa è una buona soluzione
+    const powerPercentage = (powerUsed / budget) * 100;
+
+    let targetExperiment;
+    let action;
+
+    if (powerPercentage > 80) {
+
+        let minPower = Infinity;
+        for (const exp of experiments) {
+            if (exp.status === 'active' && exp.priority === 'medium') {
+                if (Number(exp.power) < minPower) {
+                    minPower = Number(exp.power);
+                    targetExperiment = exp;
+                }
+            }
+        }
+
+        action = 'shutdown';
+
+    } else {
+
+
+        for (const exp of experiments) {
+            if (exp.status === 'standby') {
+                targetExperiment = exp;
+                break;
+            }
+        }
+
+        action = 'activate';
+
     }
-    //Si, lo so il * ha priorità su / ma mi piace mettere le parentesi ugualmente
-    let budgetThreshold = (Number(allExp.powerStatus.budget) * 80) /100
-    console.log("Total power used: " + totPowerUsed);
+
+
+    const postResponse = await fetch('http://localhost:3000/commands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: action,
+            experimentId: targetExperiment.id,
+            reason: 'Automatic power management'
+        })
+    });
+
+    const postData = await postResponse.json();
+    const commandId = postData.command.id;
+
+
+    const putResponse = await fetch('http://localhost:3000/commands/' + commandId + '/execute', {
+        method: 'PUT'
+    });
+
+    const putData = await putResponse.json();
+
+
+    return {
+        action: action,
+        experimentId: targetExperiment.id,
+        newPowerUsed: putData.newPowerUsed
+    };
 
 }
 
