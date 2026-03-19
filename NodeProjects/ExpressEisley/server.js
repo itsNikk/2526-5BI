@@ -70,9 +70,40 @@ app.use("/clienti", (req, res, next) => {
     const crediti = req.body.crediti
 
     //Validazione dell'input
-    if (!nome){
-        res.status().json()
+    if (!nome || nome.trim() === '') {
+        return res.status(400).json({ errore: "URL malformato" })
     }
+    //CTRL + D= duplica riga 
+    if (!specie || specie.trim() === '') {
+        return res.status(400).json({ errore: "URL malformato" })
+    }
+
+    if (!crediti || crediti < 0 || isNaN(parseInt(crediti))) {
+        return res.status(400).json({ errore: "URL malformato" })
+    }
+
+    next()
+})
+
+app.post("/clienti", (req, res) => {
+    const nome = req.body.nome;
+    const specie = req.body.specie;
+    const crediti = req.body.credito;
+
+    //TODO: Check - controlla se nuovo cliente non è già inserito
+    for (const client of clienti) {
+        if (client.nome.toLowerCase() === nome.toLowerCase()) {
+            //409 Conflict
+            return res.status(409).json({ "errore": "Questo cliente è già registrato" })
+        }
+    }
+
+
+    let newClient = { id: nextClientId, nome: nome, specie: specie, crediti: crediti }
+    nextClientId++;
+    clienti.push(newClient)
+
+    res.status(201).json(newClient)
 })
 
 
