@@ -541,6 +541,7 @@ app.post('/taglie', function (req, res) {
     res.status(201).json(nuova);
 });
 
+//Si, pensando a REST potremmo fare un ulteriore design. Quale?
 app.patch('/taglie/:id/chiudi', function (req, res) {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
